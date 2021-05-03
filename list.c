@@ -213,7 +213,7 @@ y3_list_insert_after(struct y3_list *node, void *data, int id, int flags, int in
 		//
 		// implement and raise exception here...
 		//
-		printf("The key already exists in this list's hashtable!\n");
+		//printf("The key already exists in this list's hashtable!\n");
 		return NULL;
 	}
 
@@ -252,7 +252,7 @@ y3_list_insert_last(struct y3_list *node, void *data, int id, int flags, int ini
 		//
 		// implement and raise exception here...
 		//
-		printf("The key already exists in this lists hashtable!\n");
+		//printf("The key already exists in this lists hashtable!\n");
 		return NULL;
 	}
 	y3_hash_insert(newnode->links, node_key, y3_list_hash_new(newnode));
@@ -286,7 +286,7 @@ y3_list_insert_beginning(struct y3_list *list, void *data, int id, int flags, in
 		//
 		// implement and raise exception here...
 		//
-		printf("The key already exists in this lists hashtable!\n");
+		//printf("The key already exists in this lists hashtable!\n");
 		return NULL;
 	}
 
