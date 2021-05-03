@@ -1,17 +1,7 @@
-/*
-D-Bug-Spy (DBGSpy) -- A live execution monitor.
-
-By
-
-Yuriy Y. Yermilov
-*/
-
 /* ********************************************************* *
 * By Yuriy Y. Yermilov aka (binaryONE) cyclone.yyy@gmail.com
 *
-* binary001.blogspot.com
-* www.myspace.com/binaryone
-* www.devrc.org (private)
+* website: code.computronium.io
 *
 * THIS SOFTWARE IS PROVIDED BY THE OWNER ``AS IS''
 * AND ANY EXPRESS OR IMPLIED WARRANTIES,
