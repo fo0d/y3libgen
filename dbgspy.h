@@ -150,7 +150,7 @@ struct y3_dbg_target {
 
     A state is created for each function call, and each
     state sets the element values for that function
-    at the time is called.
+    at the time is it called.
     */
 
     struct y3_list *xstate;
@@ -226,3 +226,4 @@ struct y3_dbg_context *y3_dbgspy_get_context(struct y3_dbg *T, char *name, int *
 void                   y3_dbgspy_set_cotext_element_val(struct y3_dbg *T, char *context_name, char *element_name, void *var_data, int is_ptr, int *error);
 struct y3_dbg_element *y3_dbgspy_get_context_element_inst(struct y3_dbg *T, char *context_name, char *element_name, int *error);
 void                  *y3_dbgspy_get_context_element_val(struct y3_dbg *T, char *context_name, char *element_name, int *error);
+void                  *y3_dbgspy_target_add_element(struct y3_dbg_target *T, int *error, int n, ...);
