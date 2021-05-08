@@ -317,29 +317,30 @@ y3_dbgspy_new_context_elements(struct y3_dbg* T,
   for (i = 0; i < n; i++) {
     p_name = va_arg(params, char*);
     if (i == 0) {
-      g->element =
-        y3_list_create_custom_hs((DBGV)malloc(V_SIZE),
-                                 p_name,
-                                 (int*)-1,
-                                 Y3_LIST_INITIAL_NODE_COUNT,
-                                 1,
-                                 y3_hash_new_table(Y3_LIST_INITIAL_NODE_COUNT,
-                                                   (int*)-1,
-                                                   y3_hash_string5,
-                                                   y3_hash_string_less,
-                                                   NULL,
-                                                   NULL,
-                                                   NULL,
-                                                   NULL,
-                                                   NULL));
+      g->element = y3_list_create_custom_hs(
+        (DBGV)malloc(V_SIZE),
+        p_name,
+        (int*)-1,
+        Y3_LIST_INITIAL_NODE_COUNT,
+        1,
+        y3_hash_new_table(Y3_LIST_INITIAL_NODE_COUNT,
+                          (int*)-1,
+                          y3_hash_string5,
+                          y3_hash_string_less,
+                          NULL,
+                          NULL,
+                          NULL,
+                          NULL,
+                          NULL));
     } else {
       if (y3_list_link_id(g->element, p_name) != NULL) {
         va_arg(params, void*);
         va_arg(params, char*);
         if (va_arg(params, int))
           va_arg(params, size_t);
-        fprintf(
-          stderr, "Skipping Global element %s (already exists)...\n", p_name);
+        fprintf(stderr,
+                "Skipping Global element %s (already exists)...\n",
+                p_name);
         continue;
       }
       g->element =
@@ -436,21 +437,21 @@ y3_dbgspy_target(struct y3_dbg* T, char* _name, int* error, int n, ...)
     new_target = 1;
     id = T->n_targets;
     if (T->target == NULL) {
-      T->target =
-        y3_list_create_custom_hs((DBGT)malloc(T_SIZE),
-                                 name,
-                                 (void*)-1,
-                                 Y3_LIST_INITIAL_NODE_COUNT,
-                                 1,
-                                 y3_hash_new_table(Y3_LIST_INITIAL_NODE_COUNT,
-                                                   (void*)-1,
-                                                   y3_hash_string5,
-                                                   y3_hash_string_less,
-                                                   NULL,
-                                                   NULL,
-                                                   NULL,
-                                                   NULL,
-                                                   NULL));
+      T->target = y3_list_create_custom_hs(
+        (DBGT)malloc(T_SIZE),
+        name,
+        (void*)-1,
+        Y3_LIST_INITIAL_NODE_COUNT,
+        1,
+        y3_hash_new_table(Y3_LIST_INITIAL_NODE_COUNT,
+                          (void*)-1,
+                          y3_hash_string5,
+                          y3_hash_string_less,
+                          NULL,
+                          NULL,
+                          NULL,
+                          NULL,
+                          NULL));
     } else {
       T->target =
         y3_list_insert(T->target, (DBGT)malloc(T_SIZE), id, 0, 2, name);
@@ -480,7 +481,7 @@ y3_dbgspy_target(struct y3_dbg* T, char* _name, int* error, int n, ...)
 
     /*
         In case where the number of elements to monitor (spy on) 
-        has
+ has
        changed, but the target already exists.
 
         The target context has to be cleaned and reset before
@@ -505,26 +506,27 @@ y3_dbgspy_target(struct y3_dbg* T, char* _name, int* error, int n, ...)
 
   link = y3_list_link_id(t->xstate, t->n_states);
   s = (DBGS)link->data;
-  printf("adding state [%d] to target [%s] id [%d]\n", t->n_states, name, id);
+  printf(
+    "adding state [%d] to target [%s] id [%d]\n", t->n_states, name, id);
 
   for (i = 0; i < n; i++) {
     p_name = va_arg(params, char*);
     if (s->element == NULL) {
-      s->element =
-        y3_list_create_custom_hs((DBGV)malloc(V_SIZE),
-                                 p_name,
-                                 (int*)-1,
-                                 Y3_LIST_INITIAL_NODE_COUNT,
-                                 1,
-                                 y3_hash_new_table(Y3_LIST_INITIAL_NODE_COUNT,
-                                                   (int*)-1,
-                                                   y3_hash_string5,
-                                                   y3_hash_string_less,
-                                                   NULL,
-                                                   NULL,
-                                                   NULL,
-                                                   NULL,
-                                                   NULL));
+      s->element = y3_list_create_custom_hs(
+        (DBGV)malloc(V_SIZE),
+        p_name,
+        (int*)-1,
+        Y3_LIST_INITIAL_NODE_COUNT,
+        1,
+        y3_hash_new_table(Y3_LIST_INITIAL_NODE_COUNT,
+                          (int*)-1,
+                          y3_hash_string5,
+                          y3_hash_string_less,
+                          NULL,
+                          NULL,
+                          NULL,
+                          NULL,
+                          NULL));
     } else {
       if (y3_dbgspy_get_element_in_state(s, p_name, error) != NULL) {
         if (*error != Y3_DBGSPY_SUCCESS) {
@@ -609,21 +611,21 @@ y3_dbgspy_target_add_element(struct y3_dbg_target* t, int* error, int n, ...)
   for (i = 0; i < n; i++) {
     p_name = va_arg(params, char*);
     if (s->element == NULL) {
-      s->element =
-        y3_list_create_custom_hs((DBGV)malloc(V_SIZE),
-                                 p_name,
-                                 (int*)-1,
-                                 Y3_LIST_INITIAL_NODE_COUNT,
-                                 1,
-                                 y3_hash_new_table(Y3_LIST_INITIAL_NODE_COUNT,
-                                                   (int*)-1,
-                                                   y3_hash_string5,
-                                                   y3_hash_string_less,
-                                                   NULL,
-                                                   NULL,
-                                                   NULL,
-                                                   NULL,
-                                                   NULL));
+      s->element = y3_list_create_custom_hs(
+        (DBGV)malloc(V_SIZE),
+        p_name,
+        (int*)-1,
+        Y3_LIST_INITIAL_NODE_COUNT,
+        1,
+        y3_hash_new_table(Y3_LIST_INITIAL_NODE_COUNT,
+                          (int*)-1,
+                          y3_hash_string5,
+                          y3_hash_string_less,
+                          NULL,
+                          NULL,
+                          NULL,
+                          NULL,
+                          NULL));
     } else {
       if (y3_dbgspy_get_element_in_state(s, p_name, error) != NULL) {
         if (*error != Y3_DBGSPY_SUCCESS) {

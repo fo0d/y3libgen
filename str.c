@@ -33,7 +33,7 @@
 #include <unistd.h>
 
 #include "hash.h"
-#include "list.h" 
+#include "list.h"
 #include "str.h"
 
 /* **************************************************** *
@@ -68,12 +68,14 @@ the amortized life of the linked list.
  * to by txt parameters.
  */
 
-int y3_str_text_nbytes(struct y3_list *txt) {
+int
+y3_str_text_nbytes(struct y3_list* txt)
+{
   int n_bytes;
-  struct y3_str_line *li;
+  struct y3_str_line* li;
 
   for (n_bytes = 0; txt; txt = txt->next) {
-    li = (struct y3_str_line *)txt->data;
+    li = (struct y3_str_line*)txt->data;
     n_bytes += li->size;
   }
   return n_bytes;
@@ -84,7 +86,9 @@ int y3_str_text_nbytes(struct y3_list *txt) {
  * pointed to by txt param.
  */
 
-void y3_str_show_text(struct y3_list *txt) {
+void
+y3_str_show_text(struct y3_list* txt)
+{
   while (txt) {
     y3_echo("line[%d]:%s", txt->id, y3_str_getline(txt, txt->id));
     txt = txt->next;
@@ -95,12 +99,15 @@ void y3_str_show_text(struct y3_list *txt) {
  * Sets flags for specific line.
  */
 
-void y3_str_setflags(struct y3_list *txt, int flags) {
-  struct y3_str_line *li;
+void
+y3_str_setflags(struct y3_list* txt, int flags)
+{
+  struct y3_str_line* li;
 
   if (txt) {
-    li = (struct y3_str_line *)txt->data;
-    if (li) li->flags |= flags;
+    li = (struct y3_str_line*)txt->data;
+    if (li)
+      li->flags |= flags;
   }
 }
 
@@ -108,12 +115,15 @@ void y3_str_setflags(struct y3_list *txt, int flags) {
  * Gets flags for specific line.
  */
 
-int y3_str_getflags(struct y3_list *txt) {
-  struct y3_str_line *li;
+int
+y3_str_getflags(struct y3_list* txt)
+{
+  struct y3_str_line* li;
 
   if (txt) {
-    li = (struct y3_str_line *)txt->data;
-    if (li) return li->flags;
+    li = (struct y3_str_line*)txt->data;
+    if (li)
+      return li->flags;
   }
   return 0;
 }
@@ -122,8 +132,11 @@ int y3_str_getflags(struct y3_list *txt) {
  * Get address of the whole line structure pointer.
  */
 
-struct y3_str_line *y3_str_getline_p(struct y3_list *txt) {
-  if (txt) return (struct y3_str_line *)txt->data;
+struct y3_str_line*
+y3_str_getline_p(struct y3_list* txt)
+{
+  if (txt)
+    return (struct y3_str_line*)txt->data;
   return NULL;
 }
 
@@ -131,15 +144,18 @@ struct y3_str_line *y3_str_getline_p(struct y3_list *txt) {
  * Creates a new line with given input and returns a pointer to it.
  */
 
-struct y3_str_line *y3_str_newline(const char *fname, char *txt, int id,
-                                   int flags) {
-  struct y3_str_line *newline;
-  if (!txt) return NULL;
+struct y3_str_line*
+y3_str_newline(const char* fname, char* txt, int id, int flags)
+{
+  struct y3_str_line* newline;
+  if (!txt)
+    return NULL;
   newline = malloc(sizeof(struct y3_str_line));
   if (newline) {
     newline->size = strlen(txt);
     newline->txt = y3_str_new(txt, newline->size);
-    if (fname) newline->fname = y3_str_new((char *)fname, strlen(fname));
+    if (fname)
+      newline->fname = y3_str_new((char*)fname, strlen(fname));
     newline->freeline = y3_str_freeline;
     newline->flags = flags;
     newline->id = id;
@@ -152,19 +168,26 @@ struct y3_str_line *y3_str_newline(const char *fname, char *txt, int id,
  * Copies a line from one container to another.
  */
 
-struct y3_list *y3_str_copyline(struct y3_list *to, struct y3_list *from) {
+struct y3_list*
+y3_str_copyline(struct y3_list* to, struct y3_list* from)
+{
   struct y3_str_line *lt, *lf;
 
   if (from && from->data) {
-    lf = (struct y3_str_line *)from->data;
-    if (!lf) return 0;
+    lf = (struct y3_str_line*)from->data;
+    if (!lf)
+      return 0;
     if (!to) {
-      to = y3_list_create(y3_str_newline(lf->fname, lf->txt, lf->id, lf->flags),
-                          (void *)lf->id, (void *)-1, from->links->M, 0);
+      to =
+        y3_list_create(y3_str_newline(lf->fname, lf->txt, lf->id, lf->flags),
+                       (void*)lf->id,
+                       (void*)-1,
+                       from->links->M,
+                       0);
       return to;
     } else {
-      y3_str_freeline((struct y3_str_line *)to->data);
-      lt = (struct y3_str_line *)to->data;
+      y3_str_freeline((struct y3_str_line*)to->data);
+      lt = (struct y3_str_line*)to->data;
       if (lf)
         if (lt->size < lf->size)
           lt->size = lf->size;
@@ -1052,7 +1075,8 @@ y3_str_i64toa_s(int64_t value, char* str, size_t size, int radix)
  *
  * NOTES
  * - Accepts: {whitespace} [+|-] {digits}
- * - No check is made for value overflow, only the lower 64 bits are assigned.
+ * - No check is made for value overflow, only the lower 64 bits are
+ * assigned.
  * - If str is NULL it crashes, as the native function does.
  */
 
@@ -1139,8 +1163,8 @@ y3_str_stoi64(const char* nptr, char** endptr, int base)
     if (!negative &&
         (ret > I64_MAX_SIZE / base || ret * base > I64_MAX_SIZE - v)) {
       ret = I64_MAX_SIZE;
-    } else if (negative &&
-               (ret < I64_MIN_SIZE / base || ret * base < I64_MIN_SIZE - v)) {
+    } else if (negative && (ret < I64_MIN_SIZE / base ||
+                            ret * base < I64_MIN_SIZE - v)) {
       ret = I64_MIN_SIZE;
     } else
       ret = ret * base + v;
@@ -2782,8 +2806,8 @@ y3_str_replace(const char* str, const char* from, const char* to)
       memcpy(pret, to, tolen);
       pret += tolen;
       pstr = str + pos_cache[i] + fromlen;
-      cpylen =
-        (i == count - 1 ? orglen : pos_cache[i + 1]) - pos_cache[i] - fromlen;
+      cpylen = (i == count - 1 ? orglen : pos_cache[i + 1]) - pos_cache[i] -
+               fromlen;
       memcpy(pret, pstr, cpylen);
       pret += cpylen;
     }

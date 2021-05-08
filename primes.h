@@ -1,9 +1,10 @@
 /* ********************************************************* *
  * By Yuriy Y. Yermilov aka (binaryONE) cyclone.yyy@gmail.com
  *
-* website: code.computronium.io
+* website: code.computronium.io 
 *
-* THIS SOFTWARE IS PROVIDED BY THE OWNER
+* THIS SOFTWARE IS PROVIDED BY THE
+ *OWNER
  *``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
  *TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE OWNER

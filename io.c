@@ -227,7 +227,8 @@ y3_io_seek(struct y3_io_stream* stream, int fp)
       new_fp = lseek(stream->handle, 0, SEEK_END);
     else if (fp == Y3_IO_BOF) // seek to BOF
       new_fp = lseek(stream->handle, 0, SEEK_SET);
-    else if (fp == Y3_IO_SET_FP) // set stream->fp to current file pointer pos
+    else if (fp ==
+             Y3_IO_SET_FP) // set stream->fp to current file pointer pos
       new_fp = lseek(stream->handle, 0, SEEK_CUR);
     else // seek to fp from stream->fp
       new_fp = lseek(stream->handle, stream->fp + fp, SEEK_SET);
@@ -536,8 +537,9 @@ y3_io_read(struct y3_io_stream* stream, size_t nbytes)
 
   if (read_total != to_read)
     stream->error = strerror(errno);
-  y3_io_seek(stream,
-             Y3_IO_SET_FP); // set stream->fp to current file pointer position
+  y3_io_seek(
+    stream,
+    Y3_IO_SET_FP); // set stream->fp to current file pointer position
   return read_total;
 }
 

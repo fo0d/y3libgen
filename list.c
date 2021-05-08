@@ -181,8 +181,8 @@ y3_list_insert(struct y3_list* head_of_list,
     init++;
 
   if (where == 0)
-    newnode =
-      y3_list_insert_beginning(head_of_list, data, id, flags, init, node_key);
+    newnode = y3_list_insert_beginning(
+      head_of_list, data, id, flags, init, node_key);
   else if (where == 1)
     newnode =
       y3_list_insert_after(head_of_list, data, id, flags, init, node_key);

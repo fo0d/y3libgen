@@ -77,6 +77,8 @@ A 'target' in dbgspy is used and meant as a synonym for the word 'function'.
 'target' names and 'id's are unique, just like functions are unique.
 */
 
+#include <sys/stat.h>
+
 /*
 Records for data target.
 */
@@ -156,7 +158,8 @@ struct y3_dbg_target
   also recorded for that particular state.
 
   A state is created for each function call, and each
-  state sets the element values for that function 
+  state sets the element values for that function
+
     at the time is it
   called.
   */
@@ -281,4 +284,7 @@ y3_dbgspy_get_context_element_val(struct y3_dbg* T,
                                   char* element_name,
                                   int* error);
 void*
-y3_dbgspy_target_add_element(struct y3_dbg_target* T, int* error, int n, ...);
+y3_dbgspy_target_add_element(struct y3_dbg_target* T,
+                             int* error,
+                             int n,
+                             ...);

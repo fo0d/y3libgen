@@ -1,6 +1,6 @@
 /* ********************************************************* *            
- *
- * By Yuriy Y. Yermilov aka (binaryONE) cyclone.yyy@gmail.com
+
+ * * By Yuriy Y. Yermilov aka (binaryONE) cyclone.yyy@gmail.com
  *
  * website: code.computronium.io
  *
