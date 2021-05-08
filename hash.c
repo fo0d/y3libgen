@@ -1,30 +1,32 @@
-/* ********************************************************* *
-* By Yuriy Y. Yermilov aka (binaryONE) cyclone.yyy@gmail.com
-*
-* website: code.computronium.io
-*
-* THIS SOFTWARE IS PROVIDED BY THE OWNER ``AS IS''
-* AND ANY EXPRESS OR IMPLIED WARRANTIES,
-* INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-* MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-* PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE OWNER
-* PROJECT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
-* INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-* PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-* DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
-* IN CONTRACT, STRICT LIABILITY, OR TORT
-* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
-* WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-* ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* ********************************************************** */
+/* ********************************************************* *            
+ *
+ * By Yuriy Y. Yermilov aka (binaryONE) cyclone.yyy@gmail.com
+ *
+ * website: code.computronium.io
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE OWNER ``AS IS''
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE OWNER
+ * PROJECT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+ * IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * ********************************************************** */
 
-#include <stdlib.h> 
-#include <string.h>
-#include <stdint.h>
 #include <assert.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "hash.h"
 #include "primes.h"
 
@@ -33,74 +35,87 @@
 /* **************** DEFAULT COMPARABLES START ********************* */
 
 int
-y3_hash_int1_less(struct y3_hashtable *ht, void *a_value, void *b_value) {
-  return ((int) a_value < (int) b_value);
+y3_hash_int1_less(struct y3_hashtable* ht, void* a_value, void* b_value)
+{
+  return ((int)a_value < (int)b_value);
 }
 
 size_t
-y3_hash_int1(struct y3_hashtable *ht, void *_v) {
-  return (ht->primes[(unsigned int) _v % ht->NPRIMES] * (unsigned int) _v) % ht->M;
+y3_hash_int1(struct y3_hashtable* ht, void* _v)
+{
+  return (ht->primes[(unsigned int)_v % ht->NPRIMES] * (unsigned int)_v) %
+         ht->M;
 }
 
 size_t
-y3_hash_int2(struct y3_hashtable *ht, void *_v) {
+y3_hash_int2(struct y3_hashtable* ht, void* _v)
+{
   if (_v != ht->NULL_item)
-    assert(ht->M >= (int) _v);
+    assert(ht->M >= (int)_v);
   return (size_t)_v;
 }
 
 int
-y3_hash_string_less(struct y3_hashtable *ht, void *a_value, void *b_value) {
-  return strcmp((char *) a_value, (char *) b_value);
+y3_hash_string_less(struct y3_hashtable* ht, void* a_value, void* b_value)
+{
+  return strcmp((char*)a_value, (char*)b_value);
 }
 
 int
-y3_hash_null(struct y3_hashtable *ht, size_t idx) {
+y3_hash_null(struct y3_hashtable* ht, size_t idx)
+{
   return ht->hash_getkey(&ht->st[idx]) == ht->NULL_item;
 }
 
 int
-y3_hash_eq(struct y3_hashtable *ht, void *a_value, void *b_value) {
-  return (!ht->hash_less(ht, a_value, b_value) && !ht->hash_less(ht, b_value, a_value));
+y3_hash_eq(struct y3_hashtable* ht, void* a_value, void* b_value)
+{
+  return (!ht->hash_less(ht, a_value, b_value) &&
+          !ht->hash_less(ht, b_value, a_value));
 }
 
 /* **************** DEFAULT COMPARABLES END ********************* */
 
 void
-y3_hash_free_item(struct y3_hashtable *ht, y3_hashItem *item) {
+y3_hash_free_item(struct y3_hashtable* ht, y3_hashItem* item)
+{
   return;
 }
 
-void *
-y3_hash_getkey(y3_hashItem *item) {
+void*
+y3_hash_getkey(y3_hashItem* item)
+{
   return item->key;
 }
 
 void
-y3_hash_setkey(y3_hashItem *item, void *key, void *value) {
+y3_hash_setkey(y3_hashItem* item, void* key, void* value)
+{
   item->key = key;
   item->value = value;
 }
 
 void
-y3_hash_set_dne(struct y3_hashtable *ht, int val) {
+y3_hash_set_dne(struct y3_hashtable* ht, int val)
+{
   ht->dne = val;
 }
 
-struct y3_hashtable *
-y3_hash_new_table(size_t initial_size,
-          void *NULL_item,
-          size_t     (*hash_func)(struct y3_hashtable *ht, void *),
-          int     (*hash_less)(struct y3_hashtable *ht, void *a, void *b),
-          int     (*hash_null)(struct y3_hashtable *ht, size_t idx),
-          int     (*hash_eq)(struct y3_hashtable *ht, void *a, void *b),
-          void    (*hash_setkey)(y3_hashItem *item, void *key, void *value),
-          void *(*hash_getkey)(y3_hashItem *item),
-          void    (*hash_free_item)(struct y3_hashtable *ht, y3_hashItem *item)
-) {
-  struct y3_hashtable *ht;
+struct y3_hashtable*
+y3_hash_new_table(
+  size_t initial_size,
+  void* NULL_item,
+  size_t (*hash_func)(struct y3_hashtable* ht, void*),
+  int (*hash_less)(struct y3_hashtable* ht, void* a, void* b),
+  int (*hash_null)(struct y3_hashtable* ht, size_t idx),
+  int (*hash_eq)(struct y3_hashtable* ht, void* a, void* b),
+  void (*hash_setkey)(y3_hashItem* item, void* key, void* value),
+  void* (*hash_getkey)(y3_hashItem* item),
+  void (*hash_free_item)(struct y3_hashtable* ht, y3_hashItem* item))
+{
+  struct y3_hashtable* ht;
 
-  ht = (struct y3_hashtable *) malloc(sizeof(struct y3_hashtable));
+  ht = (struct y3_hashtable*)malloc(sizeof(struct y3_hashtable));
   ht->M = 0;
   if (!ht->dne)
     ht->dne = 0;
@@ -158,9 +173,10 @@ y3_hash_new_table(size_t initial_size,
 }
 
 size_t
-y3_hash_string1(struct y3_hashtable *ht, void *_v) {
+y3_hash_string1(struct y3_hashtable* ht, void* _v)
+{
   size_t h = 0, a = 127;
-  char *v = (char *) _v;
+  char* v = (char*)_v;
 
   for (; *v != '\0'; v++)
     h = (a * h + *v) % ht->M;
@@ -168,12 +184,13 @@ y3_hash_string1(struct y3_hashtable *ht, void *_v) {
 }
 
 size_t
-y3_hash_string2(struct y3_hashtable *ht, void *_v) {
+y3_hash_string2(struct y3_hashtable* ht, void* _v)
+{
   register size_t h;
 
   register size_t a; // prime 1
   register size_t b; // prime 2
-  char *v = (char *) _v;
+  char* v = (char*)_v;
 
   a = (805306457);
   b = (1610612741);
@@ -185,8 +202,9 @@ y3_hash_string2(struct y3_hashtable *ht, void *_v) {
 }
 
 size_t
-y3_hash_string3(struct y3_hashtable *ht, void *_v) {
-  register char *str = _v;
+y3_hash_string3(struct y3_hashtable* ht, void* _v)
+{
+  register char* str = _v;
   unsigned long hash = 5381;
   int c;
 
@@ -197,8 +215,9 @@ y3_hash_string3(struct y3_hashtable *ht, void *_v) {
 }
 
 size_t
-y3_hash_string4(struct y3_hashtable *ht, void *_v) {
-  register char *str = _v;
+y3_hash_string4(struct y3_hashtable* ht, void* _v)
+{
+  register char* str = _v;
   unsigned long hash = 0;
   int c;
 
@@ -209,13 +228,14 @@ y3_hash_string4(struct y3_hashtable *ht, void *_v) {
 }
 
 /*
-* This is a horrible one.
-*/
+ * This is a horrible one.
+ */
 
 size_t
-y3_hash_string5(struct y3_hashtable *ht, void *_v) {
+y3_hash_string5(struct y3_hashtable* ht, void* _v)
+{
   size_t hash, tmp, len;
-  char *data = _v;
+  char* data = _v;
   size_t rem;
 
   if (data == ht->NULL_item)
@@ -229,7 +249,7 @@ y3_hash_string5(struct y3_hashtable *ht, void *_v) {
   /* Main loop */
   for (; len > 0; len--) {
     hash += get16bits(data);
-    tmp = (get16bits (data + 2) << 11) ^ hash;
+    tmp = (get16bits(data + 2) << 11) ^ hash;
     hash = (hash << 16) ^ tmp;
     //    data  += 2*sizeof (unsigned short);
     data += 4;
@@ -239,13 +259,13 @@ y3_hash_string5(struct y3_hashtable *ht, void *_v) {
   /* Handle end cases */
   switch (rem) {
     case 3:
-      hash += get16bits (data);
+      hash += get16bits(data);
       hash ^= hash << 16;
       hash ^= data[sizeof(unsigned short)] << 18;
       hash += hash >> 11;
       break;
     case 2:
-      hash += get16bits (data);
+      hash += get16bits(data);
       hash ^= hash << 11;
       hash += hash >> 17;
       break;
@@ -268,7 +288,8 @@ y3_hash_string5(struct y3_hashtable *ht, void *_v) {
 }
 
 void
-y3_hash_release(struct y3_hashtable *ht) {
+y3_hash_release(struct y3_hashtable* ht)
+{
   register int i;
 
   for (i = 0; i < ht->M; i++)
@@ -278,10 +299,11 @@ y3_hash_release(struct y3_hashtable *ht) {
 }
 
 void
-y3_hash_init(struct y3_hashtable *ht, size_t size, int exp) {
+y3_hash_init(struct y3_hashtable* ht, size_t size, int exp)
+{
   size_t i;
   size_t old_M;
-  struct y3_hashtable *tmp_ht;
+  struct y3_hashtable* tmp_ht;
 
   if (ht->M == 0)
     ht->M = size;
@@ -300,25 +322,25 @@ y3_hash_init(struct y3_hashtable *ht, size_t size, int exp) {
   } else {
     ht->st = realloc(ht->st, ht->M * sizeof(y3_hashItem));
     tmp_ht = y3_hash_new_table(old_M,
-                   ht->NULL_item,
-                   ht->hash_func,
-                   ht->hash_less,
-                   ht->hash_null,
-                   ht->hash_eq,
-                   ht->hash_setkey,
-                   ht->hash_getkey,
-                   NULL
-    );
+                               ht->NULL_item,
+                               ht->hash_func,
+                               ht->hash_less,
+                               ht->hash_null,
+                               ht->hash_eq,
+                               ht->hash_setkey,
+                               ht->hash_getkey,
+                               NULL);
     //
-    // We need to rehash the hashtable if we're expanding it, 
-				// and set the empty cells to NULL_item
+    // We need to rehash the hashtable if we're expanding it,
+    // and set the empty cells to NULL_item
     //
     if (ht->st) {
       for (i = 0; i < old_M; i++) {
         if (ht->st[i].key != ht->NULL_item) {
           y3_hash_insert(tmp_ht, ht->st[i].key, &ht->st[i]);
         } else {
-          y3_hash_setkey(&tmp_ht->st[i], tmp_ht->NULL_item, tmp_ht->NULL_item);
+          y3_hash_setkey(
+            &tmp_ht->st[i], tmp_ht->NULL_item, tmp_ht->NULL_item);
         }
       }
 
@@ -340,16 +362,19 @@ y3_hash_init(struct y3_hashtable *ht, size_t size, int exp) {
 }
 
 size_t
-y3_hash_count(struct y3_hashtable *ht) {
+y3_hash_count(struct y3_hashtable* ht)
+{
   return ht->N;
 }
 
-y3_hashItem *
-y3_hash_search(struct y3_hashtable *ht, void *key) {
+y3_hashItem*
+y3_hash_search(struct y3_hashtable* ht, void* key)
+{
   size_t cell = ht->hash_func(ht, key);
 
   while (!ht->hash_null(ht, cell)) {
-    //    printf("searching for key %d: cell %d ht->key %d\n", key, cell, ht->st[cell].key);
+    //    printf("searching for key %d: cell %d ht->key %d\n", key, cell,
+    //    ht->st[cell].key);
     if (ht->hash_eq(ht, key, ht->hash_getkey(&ht->st[cell])))
       return &ht->st[cell];
     else
@@ -360,9 +385,10 @@ y3_hash_search(struct y3_hashtable *ht, void *key) {
 }
 
 void
-y3_hash_delete(struct y3_hashtable *ht, void *key) {
+y3_hash_delete(struct y3_hashtable* ht, void* key)
+{
   register size_t j, i = ht->hash_func(ht, key);
-  y3_hashItem *v;
+  y3_hashItem* v;
 
   while (!ht->hash_null(ht, i)) {
     if (ht->hash_eq(ht, key, ht->hash_getkey(&ht->st[i])))
@@ -380,7 +406,7 @@ y3_hash_delete(struct y3_hashtable *ht, void *key) {
 
   //  y3_hash_debug_print_keys(ht);
 
-  for (j = i + 1; ; j = (j + 1) % ht->M, ht->N--) {
+  for (j = i + 1;; j = (j + 1) % ht->M, ht->N--) {
     if (ht->hash_null(ht, j))
       break;
     v = &ht->st[j];
@@ -390,16 +416,18 @@ y3_hash_delete(struct y3_hashtable *ht, void *key) {
 }
 
 void
-y3_hash_debug_print_keys(struct y3_hashtable *ht) {
+y3_hash_debug_print_keys(struct y3_hashtable* ht)
+{
   int x = 0;
 
   for (x = 0; x < ht->M; x++) {
-//    printf("index [%d] has key %d\n", x, ht->st[x].key);
+    //    printf("index [%d] has key %d\n", x, ht->st[x].key);
   }
 }
 
 void
-y3_hash_insert(struct y3_hashtable *ht, void *key, y3_hashItem *item) {
+y3_hash_insert(struct y3_hashtable* ht, void* key, y3_hashItem* item)
+{
   if (key != ht->NULL_item) {
     register size_t i = ht->hash_func(ht, key);
 
@@ -421,7 +449,8 @@ y3_hash_insert(struct y3_hashtable *ht, void *key, y3_hashItem *item) {
 }
 
 void
-y3_hash_expand(struct y3_hashtable *ht) {
+y3_hash_expand(struct y3_hashtable* ht)
+{
   y3_hash_init(ht, ht->M, 1);
 }
 

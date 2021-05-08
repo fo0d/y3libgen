@@ -1,30 +1,30 @@
 /*
 D-Bug-Spy (DBGSpy) -- A live execution monitor implemented as a
-											(High/Application)-Level Debugger library.
+                                                                                        (High/Application)-Level Debugger library.
 */
 
 /* ********************************************************* *
-* By Yuriy Y. Yermilov aka (binaryONE) cyclone.yyy@gmail.com
-*
-* website: code.computronium.io
-*
-* THIS SOFTWARE IS PROVIDED BY THE OWNER ``AS IS''
-* AND ANY EXPRESS OR IMPLIED WARRANTIES,
-* INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-* MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-* PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE OWNER
-* PROJECT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
-* INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-* DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-* PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-* DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
-* IN CONTRACT, STRICT LIABILITY, OR TORT
-* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
-* WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-* ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-* ********************************************************** */
+ * By Yuriy Y. Yermilov aka (binaryONE) cyclone.yyy@gmail.com
+ *
+ * website: code.computronium.io
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE OWNER ``AS IS''
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE OWNER
+ * PROJECT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+ * IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * ********************************************************** */
 /*
 DBGSpy is NOT a source level debugger, it is a programming interface
 that is implemented as a live execution monitor of a given program.
@@ -81,37 +81,42 @@ A 'target' in dbgspy is used and meant as a synonym for the word 'function'.
 Records for data target.
 */
 
-struct y3_dbg_type {
-    char *name;                    // type name is unique
-    int (*proc_my_type)(void *);   // for extensibility
+struct y3_dbg_type
+{
+  char* name;                 // type name is unique
+  int (*proc_my_type)(void*); // for extensibility
 };
 
-struct y3_dbg_byte {
-    char b1, b2, b3, b4;
+struct y3_dbg_byte
+{
+  char b1, b2, b3, b4;
 };
 
-struct y3_dbg_element {
-    char *name;
-    void *val;
-    //
-    // Each element can have a state
-    //
+struct y3_dbg_element
+{
+  char* name;
+  void* val;
+  //
+  // Each element can have a state
+  //
 
-    //
-    // If this flag is set to 1 then the value is dereferenced as a pointer of type.
-    // Otherwise the value is used absolutely.
-    //
-    int is_ptr;
-    //
-    // These are handlers for accessing the complex user defined types or primitive types
-    //
-    struct y3_dbg_type type;
+  //
+  // If this flag is set to 1 then the value is dereferenced as a pointer of
+  // type. Otherwise the value is used absolutely.
+  //
+  int is_ptr;
+  //
+  // These are handlers for accessing the complex user defined types or
+  // primitive types
+  //
+  struct y3_dbg_type type;
 };
 
-struct y3_dbg_xstate {
-    int id;
-    int n_elements;
-    struct y3_list *element;
+struct y3_dbg_xstate
+{
+  int id;
+  int n_elements;
+  struct y3_list* element;
 };
 
 /*
@@ -119,12 +124,13 @@ A list of 'actions' flags are provided below,
 they can be used together or alone.
 */
 
-struct y3_dbg_actions {
-    unsigned int show_all : 1;
-    unsigned int show_selected : 1;
-    unsigned int show_allstates : 1;
-    unsigned int show_contexts : 1;
-    unsigned int show_allcontexts : 1;
+struct y3_dbg_actions
+{
+  unsigned int show_all : 1;
+  unsigned int show_selected : 1;
+  unsigned int show_allstates : 1;
+  unsigned int show_contexts : 1;
+  unsigned int show_allcontexts : 1;
 };
 
 /*
@@ -132,50 +138,54 @@ Targets are kept as an array since they will not be
 deleted, also it is natural to hash them.
 */
 
-struct y3_dbg_target {
-    int  id;       /* unique id # */
-    size_t  n_len;    /* length of function name */
-    char *name;    /* name of function (target) */
-    /*
-    Each target is backed up as many times as it is
-    referenced in y3_dbgspy_target(). This is done
-    so at any point execution can be rolled back
-    to a certain state.
+struct y3_dbg_target
+{
+  int id;       /* unique id # */
+  size_t n_len; /* length of function name */
+  char* name;   /* name of function (target) */
+  /*
+  Each target is backed up as many times as it is
+  referenced in y3_dbgspy_target(). This is done
+  so at any point execution can be rolled back
+  to a certain state.
 
-    The only things that change during execution are
-    the element values.
+  The only things that change during execution are
+  the element values.
 
-    However they too are recorded and their values are
-    also recorded for that particular state.
+  However they too are recorded and their values are
+  also recorded for that particular state.
 
-    A state is created for each function call, and each
-    state sets the element values for that function
-    at the time is it called.
-    */
+  A state is created for each function call, and each
+  state sets the element values for that function 
+    at the time is it
+  called.
+  */
 
-    struct y3_list *xstate;
-    int n_elements;
-    int n_states;
+  struct y3_list* xstate;
+  int n_elements;
+  int n_states;
 };
 
-struct y3_dbg_context {
-    struct y3_dbg_context *parent;
-    struct y3_list *element;
-    char *name;
-    int id;
-    int n_elements;
+struct y3_dbg_context
+{
+  struct y3_dbg_context* parent;
+  struct y3_list* element;
+  char* name;
+  int id;
+  int n_elements;
 };
 
-struct y3_dbg {
-    struct y3_list *context;
-    struct y3_list *target;
-    struct y3_dbg_actions  flags; /* flags on how to treat this target */
-    int n_targets;
-    int n_contexts;
-    short session_id;  /* identification # of the current session */
-    struct stat st;    /* dbgspy.out file statistics */
-    int fd;            /* dbgspy.out file descriptor */
-    int written;       /* bytes written to file in this session */
+struct y3_dbg
+{
+  struct y3_list* context;
+  struct y3_list* target;
+  struct y3_dbg_actions flags; /* flags on how to treat this target */
+  int n_targets;
+  int n_contexts;
+  short session_id; /* identification # of the current session */
+  struct stat st;   /* dbgspy.out file statistics */
+  int fd;           /* dbgspy.out file descriptor */
+  int written;      /* bytes written to file in this session */
 };
 
 #define Y3_DBGSPY_PTR 1
@@ -183,47 +193,92 @@ struct y3_dbg {
 
 #define Y3_DBGSPY_MAX_NAME_LEN 1024
 
-typedef enum {
-    Y3_DBGSPY_SUCCESS,
-    Y3_DBGSPY_UNKNOWN_ERROR,
-    Y3_DBGSPY_TARGET_VARIABLE_COUNT_LESS_THAN_ZERO_ERROR,
-    Y3_DBGSPY_TARGET_VARIABLE_COUNT_CHANGED_ERROR,
-    Y3_DBGSPY_TARGET_DNE_ERROR,
-    Y3_DBGSPY_SPECIFIED_TARGET_NAME_IS_NULL_ERROR,
-    Y3_DBGSPY_SPECIFIED_CONTEXT_NAME_IS_NULL_ERROR,
-    Y3_DBGSPY_CONTEXT_DNE_ERROR,
-    Y3_DBGSPY_DUPLICATE_VARIABLE_NAME_ERROR,
-    Y3_DBGSPY_VAR_DNE_ERROR,
-    Y3_DBGSPY_TYPE_MISSMATCH_ERROR,
-    Y3_DBGSPY_NOT_INITIALIZED_ERROR,
-    Y3_DBGSPY_INVALID_OUTPUT_FILENAME_ERROR,
-    Y3_DBGSPY_CANNOT_OPEN_OUTPUT_FILE_ERROR,
-    Y3_DBGSPY_CANNOT_GET_OUTPUT_FILE_STATS_ERROR,
+typedef enum
+{
+  Y3_DBGSPY_SUCCESS,
+  Y3_DBGSPY_UNKNOWN_ERROR,
+  Y3_DBGSPY_TARGET_VARIABLE_COUNT_LESS_THAN_ZERO_ERROR,
+  Y3_DBGSPY_TARGET_VARIABLE_COUNT_CHANGED_ERROR,
+  Y3_DBGSPY_TARGET_DNE_ERROR,
+  Y3_DBGSPY_SPECIFIED_TARGET_NAME_IS_NULL_ERROR,
+  Y3_DBGSPY_SPECIFIED_CONTEXT_NAME_IS_NULL_ERROR,
+  Y3_DBGSPY_CONTEXT_DNE_ERROR,
+  Y3_DBGSPY_DUPLICATE_VARIABLE_NAME_ERROR,
+  Y3_DBGSPY_VAR_DNE_ERROR,
+  Y3_DBGSPY_TYPE_MISSMATCH_ERROR,
+  Y3_DBGSPY_NOT_INITIALIZED_ERROR,
+  Y3_DBGSPY_INVALID_OUTPUT_FILENAME_ERROR,
+  Y3_DBGSPY_CANNOT_OPEN_OUTPUT_FILE_ERROR,
+  Y3_DBGSPY_CANNOT_GET_OUTPUT_FILE_STATS_ERROR,
 } Y3_DBGSPY_ERRORS;
 
-typedef struct y3_dbg_target*    DBGT;
-typedef struct y3_dbg_context*   DBGC;
-typedef struct y3_dbg_xstate*    DBGS;
-typedef struct y3_dbg_element*  DBGV;
+typedef struct y3_dbg_target* DBGT;
+typedef struct y3_dbg_context* DBGC;
+typedef struct y3_dbg_xstate* DBGS;
+typedef struct y3_dbg_element* DBGV;
 
 #define T_SIZE sizeof(struct y3_dbg_target)
 #define G_SIZE sizeof(struct y3_dbg_context)
 #define S_SIZE sizeof(struct y3_dbg_xstate)
 #define V_SIZE sizeof(struct y3_dbg_element)
 
-struct y3_dbg         *y3_dbgspy_init(char *file, int *error);
-struct y3_dbg_target  *y3_dbgspy_target(struct y3_dbg *T, char *name, int *error, int n, ...);
-int                    y3_dbgspy_openoutfile(struct y3_dbg *T, char *name);
-int                    y3_dbgspy_get_target_id(struct y3_dbg *T, char *name, int *error);
-struct y3_dbg_context *y3_dbgspy_new_context(struct y3_dbg *T, char *name, int *error);
-void                   y3_dbgspy_new_context_elements(struct y3_dbg *T, char *name, int *error, int n, ...);
-struct y3_dbg_element *y3_dbgspy_get_element_in_state(struct y3_dbg_xstate *T, char *name, int *error);
-void                  *y3_dbgspy_get_target_element_val(struct y3_dbg *T, char *targ_name, char *element_name, int *error);
-struct y3_dbg_element *y3_dbgspy_get_target_element_inst(struct y3_dbg *T, char *targ_name, char *element_name, int *error);
-void                   y3_dbgspy_set_target_element_val(struct y3_dbg *T, char *targ_name, char *element_name, void *var_data, int is_ptr, int *error);
-struct y3_dbg_target  *y3_dbgspy_get_target(struct y3_dbg *T, char *name, int *error);
-struct y3_dbg_context *y3_dbgspy_get_context(struct y3_dbg *T, char *name, int *error);
-void                   y3_dbgspy_set_cotext_element_val(struct y3_dbg *T, char *context_name, char *element_name, void *var_data, int is_ptr, int *error);
-struct y3_dbg_element *y3_dbgspy_get_context_element_inst(struct y3_dbg *T, char *context_name, char *element_name, int *error);
-void                  *y3_dbgspy_get_context_element_val(struct y3_dbg *T, char *context_name, char *element_name, int *error);
-void                  *y3_dbgspy_target_add_element(struct y3_dbg_target *T, int *error, int n, ...);
+struct y3_dbg*
+y3_dbgspy_init(char* file, int* error);
+struct y3_dbg_target*
+y3_dbgspy_target(struct y3_dbg* T, char* name, int* error, int n, ...);
+int
+y3_dbgspy_openoutfile(struct y3_dbg* T, char* name);
+int
+y3_dbgspy_get_target_id(struct y3_dbg* T, char* name, int* error);
+struct y3_dbg_context*
+y3_dbgspy_new_context(struct y3_dbg* T, char* name, int* error);
+void
+y3_dbgspy_new_context_elements(struct y3_dbg* T,
+                               char* name,
+                               int* error,
+                               int n,
+                               ...);
+struct y3_dbg_element*
+y3_dbgspy_get_element_in_state(struct y3_dbg_xstate* T,
+                               char* name,
+                               int* error);
+void*
+y3_dbgspy_get_target_element_val(struct y3_dbg* T,
+                                 char* targ_name,
+                                 char* element_name,
+                                 int* error);
+struct y3_dbg_element*
+y3_dbgspy_get_target_element_inst(struct y3_dbg* T,
+                                  char* targ_name,
+                                  char* element_name,
+                                  int* error);
+void
+y3_dbgspy_set_target_element_val(struct y3_dbg* T,
+                                 char* targ_name,
+                                 char* element_name,
+                                 void* var_data,
+                                 int is_ptr,
+                                 int* error);
+struct y3_dbg_target*
+y3_dbgspy_get_target(struct y3_dbg* T, char* name, int* error);
+struct y3_dbg_context*
+y3_dbgspy_get_context(struct y3_dbg* T, char* name, int* error);
+void
+y3_dbgspy_set_cotext_element_val(struct y3_dbg* T,
+                                 char* context_name,
+                                 char* element_name,
+                                 void* var_data,
+                                 int is_ptr,
+                                 int* error);
+struct y3_dbg_element*
+y3_dbgspy_get_context_element_inst(struct y3_dbg* T,
+                                   char* context_name,
+                                   char* element_name,
+                                   int* error);
+void*
+y3_dbgspy_get_context_element_val(struct y3_dbg* T,
+                                  char* context_name,
+                                  char* element_name,
+                                  int* error);
+void*
+y3_dbgspy_target_add_element(struct y3_dbg_target* T, int* error, int n, ...);
